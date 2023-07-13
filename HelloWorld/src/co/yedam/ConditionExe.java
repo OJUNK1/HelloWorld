@@ -9,6 +9,10 @@ public class ConditionExe {
 			
 			if (result % 2 == 0) {
 				System.out.println("2의 배수입니다.");
+			} else if ( result % 3 == 0) {
+				System.out.println("3의 배수입니다.");
+			} else {
+				System.out.println("소수입니다.");
 			}
 	}
   }
