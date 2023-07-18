@@ -16,7 +16,7 @@ public class StarExe {
 
 		for (int i = 0; i < 4; i++) {
 			for (int b = 0; b < 4 - i; b++) {
-				stars += "b";
+				stars += " ";
 			}
 			for (int j = 0; j <= i; j++) {
 				stars += "*";
