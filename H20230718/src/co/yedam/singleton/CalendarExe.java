@@ -6,10 +6,7 @@ import java.util.Scanner;
 public class CalendarExe {
 	public static void main(String[] args) {
 		Scanner scn = new Scanner(System.in);
-	
-		
-		
-		
+
 		System.out.println("원하는 달력의 년도 입력 >");
 		int y = Integer.parseInt(scn.nextLine());
 		System.out.println("원하는 달력의 월을 입력>> ");
@@ -20,7 +17,7 @@ public class CalendarExe {
 	public static void showCal(int year, int month) {
 //		System.out.println(Calendar.YEAR);
 		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, 2);
+		cal.set(year, month - 1, 1);
 
 //		System.out.println("년도: " + cal.get(Calendar.YEAR));
 //		System.out.println("월: " + (cal.get(Calendar.MONTH) + 1));
@@ -38,8 +35,7 @@ public class CalendarExe {
 		System.out.println();
 		int lastDate = cal.getActualMaximum(Calendar.DATE);
 		int firstDay = cal.get(Calendar.DAY_OF_WEEK);
-		int pos = firstDay;
-		for (int i = 0; i < 7-pos; i++) {
+		for (int i = 0; i < firstDay - 1; i++) {
 			System.out.printf("%4s", "");
 		}
 		for (int i = 1; i <= lastDate; i++) {
