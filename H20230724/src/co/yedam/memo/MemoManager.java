@@ -45,10 +45,10 @@ public class MemoManager {
 		Memo memo = null;
 		if (date.isEmpty()) {
 			memo = new Memo(no, content);
-			
+
 		} else {
 			memo = new Memo(no, date, content);
-		
+
 		}
 		if (memoStorage.add(memo)) {
 			System.out.println("정상 등록");
@@ -60,29 +60,34 @@ public class MemoManager {
 	public void searchData() {
 		System.out.println("날짜>> ");
 		String date = scn.nextLine();
+		int Count = 0;
 		// 입력된 날짜의 메모를 출력.
 		for (Memo memo : memoStorage) {
 			if (memo.getDate().equals(date)) {
-				System.out.println(memo.toString());				
-			} else {
-				System.out.printf("%s에 등록한 메모가 없습니다 \n", date);
-				break;
+				System.out.println(memo.toString());
+				Count++;
 			}
+		}
+		if (Count == 0) {
+			System.out.printf("%s에 등록한 메모가 없습니다 \n", date);
 		}
 	}
 
 	public void deleteData() {
 		System.out.println("번호>> ");
 		int no = Integer.parseInt(scn.nextLine());
+		int Count = -1;
 		for (int i = 0; i < memoStorage.size(); i++) {
 			if (memoStorage.get(i).getNo() == no) {
-				Object obj = memoStorage.get(i);
-				memoStorage.remove(i);
-				System.out.println("삭제완료");
-			} else {
-				System.out.println("삭제에 실패했습니다");
+				Count = i;
 				break;
 			}
+		}
+		if (Count != -1) {
+			memoStorage.remove(Count);
+			System.out.println("삭제에 성공했습니다");
+		} else {
+			System.out.println("삭제에 실패");
 		}
 	}
 
@@ -116,6 +121,6 @@ public class MemoManager {
 
 			e.printStackTrace();
 		}
-		
+
 	}
 }
