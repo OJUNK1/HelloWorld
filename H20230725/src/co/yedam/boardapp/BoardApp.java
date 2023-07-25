@@ -63,8 +63,10 @@ public class BoardApp {
 			if (boardNo == boards.get(i).getBoardNo()) {
 				Board obj = boards.get(i);
 				System.out.println(obj);
+				return obj;
 			}
 		}
+		System.out.println("해당 글번호에 해당하는 게시물이 없습니다.");
 		return null;
 	}
 
@@ -72,6 +74,8 @@ public class BoardApp {
 	List<Board> boardList() {
 		return boards;
 	}
+	
+	
 
 	// 출력 스트림
 	public void storeBoardToFile() {

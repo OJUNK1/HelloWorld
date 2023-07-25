@@ -54,11 +54,11 @@ public class MainExe {
 				} else if (menu == 2) {
 					System.out.println("등록된 글을 조회합니다.");
 					List<Board> boards = boardapps.boardList();
-					for (int i = 0; i < boards.size(); i++) {
-						if (boards.get(i) != null) {
+					if (boards.isEmpty()) {
+						System.out.println("등록된 글이 없습니다");
+					} else {
+						for (int i = 0; i < boards.size(); i++) {
 							System.out.println(boards.get(i).toString());
-						} else {
-							System.out.println("등록된 글이 없습니다");
 						}
 					}
 				} else if (menu == 3) {

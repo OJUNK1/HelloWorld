@@ -10,35 +10,51 @@ import java.util.List;
 import java.util.Map;
 
 public class User implements Serializable {
-	String name;
 	String id;
+	String name;
 	String pw;
+
+	String logId;
+	String logPw;
+
+	List<User> users = new ArrayList<>();
+
+	public User(String id, String name, String pw) {
+		this.id = id;
+		this.pw = pw;
+		this.name = name;
+	}
 
 	public User() {
 		readUserFromFile();
 	}
 
-	List<User> users = new ArrayList<>();
-
 	boolean login(String id, String pw) {
-		if (users.contains(id)) {
-			if (users..equals(pw)) {
-				return true; // 로그인 성공
+		for (User user : users) {
+			if (user.getId().equals(id)) {
+				if (user.getPw().equals(pw)) {
+					logId = id;
+					logPw = pw;
+					return true; // 로그인 성공
+				} else {
+					return false; // 로그인 실패
+				}
 			}
-		} else {
-			return false; // 로그인 실패
 		}
 		return false; // 사용자 id 존재하지 않음
 	}
 
-	boolean signUp(String id, String pw) {
-		if (!users.contains(id)) {
-			users.add(id, pw);
-			return true;
+	boolean signUp(String id, String name, String pw) {
+		for (User user : users) {
+			if (user.getId().equals(id)) {
+				return false; // 이미 등록된 id 존재해 회원가입에 실패
+			}
 		}
-		return false;
+		User newUser = new User(id, name, pw);
+		users.add(newUser);
+		return true; // 회원가입 성공
 	}
-		
+
 	public String getName() {
 		return name;
 	}
@@ -60,7 +76,16 @@ public class User implements Serializable {
 	}
 
 	public void setPw(String pw) {
-		this.pw = pw;
+		if (logId != null && logPw != null) {
+			for (User user : users) {
+				if (user.getId().equals(logId) && user.getPw().equals(logPw)) {
+					user.setPw(pw);
+					System.out.println("비밀번호를 수정했습니다.");
+					return;
+				}
+			}
+			System.out.println("비밀번호 수정에 실패했습니다.");
+		}
 	}
 
 	public List<User> getUsers() {
@@ -72,7 +97,7 @@ public class User implements Serializable {
 	}
 
 	// 출력스트림
-	public void storeUsertoFile() {
+	public void storeUserToFile() {
 		try {
 			FileOutputStream fos = new FileOutputStream("c:/Temp/userList.txt");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);

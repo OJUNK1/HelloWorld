@@ -16,7 +16,7 @@ public class BoardExe {
 
 		Scanner scn = new Scanner(System.in);
 		boolean run = true;
-
+		boolean isLoop = true;
 		while (run) {
 			System.out.println("메뉴를 입력> ");
 			System.out.println("1.회원가입 2.로그인");
@@ -26,12 +26,14 @@ public class BoardExe {
 				System.out.println("회원가입을 진행하겠습니다");
 				System.out.println("등록할 ID를 입력> ");
 				String id = scn.nextLine();
+				System.out.println("이름을 입력> ");
+				String name = scn.nextLine();
 				System.out.println("비밀번호를 입력> ");
 				String pw = scn.nextLine();
-				boolean result = users.signUp(id, pw);
+				boolean result = users.signUp(id, name, pw);
 				if (result) {
 					System.out.println("회원가입에 성공했습니다");
-					users.storeUsertoFile();
+					users.storeUserToFile();
 				} else {
 					System.out.println("중복된 ID입니다.");
 				}
@@ -45,13 +47,14 @@ public class BoardExe {
 				boolean result = users.login(logId, logPw);
 				if (result) {
 					System.out.println("로그인에 성공했습니다");
+					break;
 				} else {
 					System.out.println("아이디 혹은 비밀번호가 틀렸습니다");
 					continue;
 				}
 			}
 		}
-		while (run) {
+		while (isLoop) {
 			System.out.println("메뉴를 입력> ");
 			System.out.println("1.글등록 2.글수정 3.글삭제 4.목록 5.종료 9.개인정보(비번수정)");
 			int menu = Integer.parseInt(scn.nextLine());
@@ -73,9 +76,9 @@ public class BoardExe {
 			} else if (menu == 2) {
 				System.out.println("수정하고싶은 글의 글번호를 입력> ");
 				boardNo = Integer.parseInt(scn.nextLine());
-				Board board = boardapps.getBoard(boardNo);
 				System.out.println("수정할 글내용을 입력> ");
 				content = scn.nextLine();
+				Board board = boardapps.getBoard(boardNo);
 				// 작성자 동일여부 확인
 				if (!board.getWriter().equals(logId)) {
 					System.out.println("수정할 권한이 없습니다");
@@ -105,17 +108,25 @@ public class BoardExe {
 			} else if (menu == 4) {
 				System.out.println("등록된 글을 조회합니다");
 				List<Board> boards = boardapps.boardList();
-				for (int i = 0; i < boards.size(); i++) {
-					if (boards.get(i) != null) {
+				if (boards.isEmpty()) {
+					System.out.println("등록된 글이 없습니다");
+				} else {
+					for (int i = 0; i < boards.size(); i++) {
 						System.out.println(boards.get(i).toString());
-					} else {
-						System.out.println("등록된 글이 없습니다");
+
 					}
 				}
 			} else if (menu == 5) {
 				System.out.println("종료합니다.");
 				boardapps.storeBoardToFile();
-				run = false;
+				users.storeUserToFile();
+				isLoop = false;
+			} else if (menu == 9) {
+				System.out.println("비밀번호를 수정합니다.");
+				System.out.println("수정할 비밀번호를 입력> ");
+				String pw = scn.nextLine();
+				users.setPw(pw);
+				users.storeUserToFile();
 			}
 		}
 		System.out.println("end of prog.");
