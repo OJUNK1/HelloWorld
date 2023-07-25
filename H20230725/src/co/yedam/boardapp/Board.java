@@ -1,13 +1,14 @@
-package co.yedam.collect.board;
+package co.yedam.boardapp;
 
-public class Board {
-	// 필드
-	private int boardNo;
-	private String title;
-	private String content;
-	private String writer;
+import java.io.Serializable;
 
-	// 생성자
+public class Board implements Serializable {
+	int boardNo;
+	String title;
+	String content;
+	String writer;
+
+	// 생성자 함수
 	public Board(int boardNo, String title, String content, String writer) {
 		super();
 		this.boardNo = boardNo;
@@ -20,7 +21,7 @@ public class Board {
 
 	}
 
-	//
+	// getter setter
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -55,7 +56,6 @@ public class Board {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "[ boardNo= " + boardNo + ", title= " + title + ", content= " + content + ", writer= " + writer
 				+ " ] \n";
 	}
