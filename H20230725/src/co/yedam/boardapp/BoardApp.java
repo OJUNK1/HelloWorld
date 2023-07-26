@@ -10,21 +10,13 @@ import java.util.List;
 
 public class BoardApp {
 	List<Board> boards = new ArrayList<>();
-	Board board = new Board();
+//	Board board = new Board();
 
 	public BoardApp() {
 		readBoardFromFile();
 	}
 
-	public int getNextNo() {
-		int boardNo = 0;
-		for (int i = 0; i < boards.size(); i++) {
-			if (boards.get(i).getBoardNo() > boardNo) {
-				boardNo = boards.get(i).getBoardNo();
-			}
-		}
-		return boardNo + 1;
-	}
+
 
 	// 추가
 	boolean addBoard(Board board) {

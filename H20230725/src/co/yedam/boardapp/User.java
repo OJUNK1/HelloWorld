@@ -76,16 +76,18 @@ public class User implements Serializable {
 	}
 
 	public void setPw(String pw) {
-		if (logId != null && logPw != null) {
-			for (User user : users) {
-				if (user.getId().equals(logId) && user.getPw().equals(logPw)) {
-					user.setPw(pw);
-					System.out.println("비밀번호를 수정했습니다.");
-					return;
-				}
+		this.pw = pw;
+	}
+
+	public boolean editPw(User user) {
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getId().equals(user.getId())) {
+				users.get(i).setId(user.getId());
+				users.get(i).setPw(user.getPw());
+				return true;
 			}
-			System.out.println("비밀번호 수정에 실패했습니다.");
 		}
+		return false;
 	}
 
 	public List<User> getUsers() {

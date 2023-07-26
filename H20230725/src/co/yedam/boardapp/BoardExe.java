@@ -60,7 +60,7 @@ public class BoardExe {
 			int menu = Integer.parseInt(scn.nextLine());
 			if (menu == 1) {
 				writer = logId;
-				boardNo = boardapps.getNextNo();
+//				boardNo = boardapps.getNextNo();
 				System.out.println("글제목을 입력> ");
 				title = scn.nextLine();
 				System.out.println("글내용을 입력> ");
@@ -125,9 +125,15 @@ public class BoardExe {
 				System.out.println("비밀번호를 수정합니다.");
 				System.out.println("수정할 비밀번호를 입력> ");
 				String pw = scn.nextLine();
-				users.setPw(pw);
-				users.storeUserToFile();
+				User user = new User(logId, users.getName(), pw);
+				boolean result = users.editPw(user);
+				if (result) {
+					System.out.println("비밀번호를 변경했습니다");
+				} else {
+					System.out.println("변경에 실패했습니다");
+				}
 			}
+
 		}
 		System.out.println("end of prog.");
 	}
