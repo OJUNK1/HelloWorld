@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int productDelete(ProductVO vo) {
 		int n = 0;
-		String sql = "delete from product where product_code = ?";
+		String sql = "DELETE FROM PRODUCT WHERE PRODUCT_CODE = ?";
 		try {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
@@ -119,14 +119,19 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int productEdit(ProductVO vo) {
-		String sql = "UPDATE PRODUCT SET PRODUCT_PRICE = ? WHERE PRODUCT_ID = ?";
+	public int productEdit(ProductVO vo) { // 가격 변경 가능
+		String sql = "UPDATE PRODUCT SET PRODUCT_PRICE = ? WHERE PRODUCT_CODE = ?";
 		int n = 0;
 		try {
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.
+			preparedStatement.setInt(1, vo.getProductPrice());
+			preparedStatement.setString(2, vo.getProductCode());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
 		}
-		return 0;
+		return n;
 	}
 
 }

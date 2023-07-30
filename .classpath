@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="firstproject/src/main/java"/>
+	<classpathentry kind="src" path="firstproject/src/test/java"/>
+	<classpathentry kind="src" path="H20230714/src"/>
+	<classpathentry kind="src" path="H20230718/src"/>
+	<classpathentry kind="src" path="H20230719/src"/>
+	<classpathentry kind="src" path="H20230720/src"/>
+	<classpathentry kind="src" path="H20230721/src"/>
+	<classpathentry kind="src" path="H20230724/src"/>
+	<classpathentry excluding="co/yedam/product2/H20230725/src/" kind="src" path="H20230725/src"/>
+	<classpathentry kind="src" path="H20230725/src/co/yedam/product2/H20230725/src"/>
+	<classpathentry kind="src" path="HelloWorld/src"/>
+	<classpathentry kind="src" path="JdbcSample/src"/>
+	<classpathentry kind="src" path="miniproject/src/main/java"/>
+	<classpathentry kind="src" path="miniproject/src/test/java"/>
+	<classpathentry kind="src" path="noticeprj/src/main/java"/>
+	<classpathentry kind="src" path="noticeprj/src/test/java"/>
+	<classpathentry kind="src" path="T20230726/src"/>
+	<classpathentry kind="output" path="H20230719/bin"/>
+</classpath>
