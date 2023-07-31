@@ -228,24 +228,32 @@ public class MainMenu {
 		System.out.println("조회할 날짜 말일을 입력하세요. (yyyy-MM-dd) ==");
 		String endDate = sc.nextLine();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String sdate = sdf.format(startDate);
-		String edate = sdf.format(endDate);
-		java.sql.Date sqlDateS = java.sql.Date.valueOf(sdate);
-		java.sql.Date sqlDateE = java.sql.Date.valueOf(edate);
-		stock.setStockDate(sqlDateS);
-		stock.setStockDate(sqlDateE);
-		stock = ss.transactionSelectByDate(stock);
-		if (stock.getProductCode() != null) {
-			stock.toString();
-		} else {
-			System.out.println("에러");
-		}
 
+		try {
+			java.util.Date uStartDate = sdf.parse(startDate);
+			java.util.Date uEndDate = sdf.parse(endDate);
+			Date sqlStartDate = new Date(uStartDate.getTime());
+			Date sqlEndDate = new Date(uEndDate.getTime());
+
+			List<StockVO> stocks = ss.transactionSelectByDate(sqlStartDate, sqlEndDate);
+			if (!stocks.isEmpty()) {
+				for (StockVO stockList : stocks) {
+					stockList.toString();
+				}
+			} else {
+				System.out.println("기간 내 입고, 출고 기록이 존재하지 않습니다. == ");
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void inAndOutProduct() {
 		System.out.println("입출고 내역을 등록할 제품의 코드를 입력 . ==");
+		sc.nextLine();
 		String code = sc.nextLine();
+
+		// 해당 제품의 기초재고..
 
 	}
 

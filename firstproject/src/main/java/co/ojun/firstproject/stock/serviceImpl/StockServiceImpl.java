@@ -1,12 +1,12 @@
 package co.ojun.firstproject.stock.serviceImpl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import co.ojun.firstproject.common.DataSource;
 import co.ojun.firstproject.stock.service.StockService;
@@ -86,29 +86,31 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public StockVO transactionSelectByDate(StockVO vo) {
+	public List<StockVO> transactionSelectByDate(Date startDate, Date endDate) {
 		String sql = "select * from stock where stock_date between ? and ?";
+		List<StockVO> stocks = new ArrayList<>();
 		try {
 			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setDate(1, vo.getStockDate());
-			preparedStatement.setDate(2, vo.getStockDate());
+			preparedStatement.setDate(1, startDate);
+			preparedStatement.setDate(2, endDate);
 			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				vo = new StockVO();
+			while (resultSet.next()) {
+				StockVO vo = new StockVO();
 				vo.setProductCode(resultSet.getString("product_code"));
 				vo.setStock00(resultSet.getInt("stock_e_00"));
 				vo.setStockIn(resultSet.getInt("stock_i"));
 				vo.setStockOut(resultSet.getInt("stock_o"));
 				vo.setStock99(resultSet.getInt("stock_e_99"));
 				vo.setStockDate(resultSet.getDate("stock_date"));
+				stocks.add(vo);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close();
 		}
-		return vo;
+		return stocks;
 	}
 
 	@Override
@@ -119,7 +121,8 @@ public class StockServiceImpl implements StockService {
 			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
-			vo.setStock00(resultSet.getInt("stock_e_00"));
+			int currentStock = vo.getStock00() + vo.getStockIn() - vo.getStockOut();
+			vo.setStock99(currentStock);
 			preparedStatement.setInt(3, vo.getStockIn());
 			preparedStatement.setInt(4, vo.getStockOut());
 			preparedStatement.setInt(5, vo.getStock99());
