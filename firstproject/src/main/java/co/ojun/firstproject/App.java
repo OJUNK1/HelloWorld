@@ -1,13 +1,11 @@
 package co.ojun.firstproject;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
+import co.ojun.firstproject.menu.MainMenu;
+
+public class App {
+	public static void main(String[] args) {
+		MainMenu menu = new MainMenu();
+		menu.run();
+	}
+
 }

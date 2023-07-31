@@ -36,8 +36,9 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "SELECT * FROM PRODUCT";
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO vo;
-		connection = dao.getConnection();
+
 		try {
+			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -46,7 +47,6 @@ public class ProductServiceImpl implements ProductService {
 				vo.setProductName(resultSet.getString("product_name"));
 				vo.setProductPrice(resultSet.getInt("product_price"));
 				vo.setProductDescription(resultSet.getString("product_description"));
-				vo.setProductQuantity(resultSet.getInt("product_quantity"));
 				products.add(vo);
 			}
 		} catch (SQLException e) {
@@ -59,8 +59,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductVO productSelect(ProductVO vo) {
-		String sql = "select * from product where product_code = ?";
+		String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_CODE = ?";
 		try {
+			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
 			resultSet = preparedStatement.executeQuery();
@@ -70,10 +71,9 @@ public class ProductServiceImpl implements ProductService {
 				vo.setProductName(resultSet.getString("product_name"));
 				vo.setProductPrice(resultSet.getInt("product_price"));
 				vo.setProductDescription(resultSet.getString("product_description"));
-				vo.setProductQuantity(resultSet.getInt("product_quantity"));
 			}
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		} finally {
 			close();
 		}
@@ -83,14 +83,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int productInsert(ProductVO vo) {
 		int n = 0;
-		String sql = "insert into product values(?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO PRODUCT VALUES(?, ?, ?, ?, ?)";
 		try {
+			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
 			preparedStatement.setString(2, vo.getProductName());
 			preparedStatement.setInt(3, vo.getProductPrice());
 			preparedStatement.setString(4, vo.getProductDescription());
-			preparedStatement.setInt(5, vo.getProductQuantity());
 
 			n = preparedStatement.executeUpdate();
 
@@ -107,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
 		int n = 0;
 		String sql = "DELETE FROM PRODUCT WHERE PRODUCT_CODE = ?";
 		try {
+			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
 			n = preparedStatement.executeUpdate();
@@ -123,9 +124,11 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "UPDATE PRODUCT SET PRODUCT_PRICE = ? WHERE PRODUCT_CODE = ?";
 		int n = 0;
 		try {
+			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, vo.getProductPrice());
 			preparedStatement.setString(2, vo.getProductCode());
+			n = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

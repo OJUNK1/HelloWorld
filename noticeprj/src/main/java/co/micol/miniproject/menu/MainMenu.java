@@ -113,7 +113,7 @@ public class MainMenu {
 	// 여기서 CRUD 메소드를 private으로 하나씩 만들어 간다.
 	private void memberSelect() {
 		MemberVO member = new MemberVO();
-		System.out.println("===검색할 회원의 아이디를 입력하세요?.===");
+		System.out.println("===조회할 회원의 아이디를 입력하세요?.===");
 		sc.nextLine();
 		String id = sc.nextLine();
 		member.setMemberId(id);
