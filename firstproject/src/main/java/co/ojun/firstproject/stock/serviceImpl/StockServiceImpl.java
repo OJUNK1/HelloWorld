@@ -34,7 +34,7 @@ public class StockServiceImpl implements StockService {
 
 	@Override
 	public List<StockVO> transactionListAll() {
-		String sql = "SELECT * FROM STOCK";
+		String sql = "SELECT * FROM STOCK ORDER BY PRODUCT_CODE, STOCK_DATE";
 		List<StockVO> stocks = new ArrayList<StockVO>();
 		StockVO vo;
 		try {
@@ -44,10 +44,10 @@ public class StockServiceImpl implements StockService {
 			while (resultSet.next()) {
 				vo = new StockVO();
 				vo.setProductCode(resultSet.getString("product_code"));
-				vo.setStock00(resultSet.getInt("stock_e_00"));
+
 				vo.setStockIn(resultSet.getInt("stock_i"));
 				vo.setStockOut(resultSet.getInt("stock_o"));
-				vo.setStock99(resultSet.getInt("stock_e_99"));
+				vo.setStock(resultSet.getInt("stock_number"));
 				vo.setStockDate(resultSet.getDate("stock_date"));
 				stocks.add(vo);
 			}
@@ -60,29 +60,29 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public StockVO transactionSelect(StockVO vo) {
-		String sql = "SELECT * FROM STOCK WHERE PRODUCT_CODE = ?";
+	public List<StockVO> transactionSelect(String code) {
+		String sql = "SELECT * FROM STOCK WHERE PRODUCT_CODE = ? ORDER BY STOCK_DATE";
+		List<StockVO> stocks = new ArrayList<StockVO>();
 		try {
 			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, vo.getProductCode());
+			preparedStatement.setString(1, code);
 			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				vo = new StockVO();
+			while (resultSet.next()) {
+				StockVO vo = new StockVO();
 				vo.setProductCode(resultSet.getString("product_code"));
-				vo.setStock00(resultSet.getInt("stock_e_00"));
 				vo.setStockIn(resultSet.getInt("stock_i"));
 				vo.setStockOut(resultSet.getInt("stock_o"));
-				vo.setStock99(resultSet.getInt("stock_e_99"));
+				vo.setStock(resultSet.getInt("stock_number"));
 				vo.setStockDate(resultSet.getDate("stock_date"));
+				stocks.add(vo);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close();
 		}
-		return vo;
+		return stocks;
 	}
 
 	@Override
@@ -98,10 +98,9 @@ public class StockServiceImpl implements StockService {
 			while (resultSet.next()) {
 				StockVO vo = new StockVO();
 				vo.setProductCode(resultSet.getString("product_code"));
-				vo.setStock00(resultSet.getInt("stock_e_00"));
 				vo.setStockIn(resultSet.getInt("stock_i"));
 				vo.setStockOut(resultSet.getInt("stock_o"));
-				vo.setStock99(resultSet.getInt("stock_e_99"));
+				vo.setStock(resultSet.getInt("stock_number"));
 				vo.setStockDate(resultSet.getDate("stock_date"));
 				stocks.add(vo);
 			}
@@ -121,12 +120,10 @@ public class StockServiceImpl implements StockService {
 			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductCode());
-			int currentStock = vo.getStock00() + vo.getStockIn() - vo.getStockOut();
-			vo.setStock99(currentStock);
-			preparedStatement.setInt(3, vo.getStockIn());
-			preparedStatement.setInt(4, vo.getStockOut());
-			preparedStatement.setInt(5, vo.getStock99());
-			preparedStatement.setDate(6, new java.sql.Date(vo.getStockDate().getTime()));
+			preparedStatement.setInt(2, vo.getStockIn());
+			preparedStatement.setInt(3, vo.getStockOut());
+			preparedStatement.setInt(4, vo.getStock());
+			preparedStatement.setDate(5, vo.getStockDate());
 
 			n = preparedStatement.executeUpdate();
 
@@ -138,4 +135,27 @@ public class StockServiceImpl implements StockService {
 		return n;
 	}
 
+	public StockVO getExistingStock(StockVO vo) {
+		String sql = "SELECT * FROM (SELECT * FROM STOCK WHERE PRODUCT_CODE = ? ORDER BY STOCK_DATE DESC) WHERE ROWNUM = 1";
+		try {
+			connection = dao.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, vo.getProductCode());
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				vo = new StockVO();
+				vo.setProductCode(resultSet.getString("product_code"));
+				vo.setStockIn(resultSet.getInt("stock_i"));
+				vo.setStockOut(resultSet.getInt("stock_o"));
+				vo.setStock(resultSet.getInt("stock_number"));
+				vo.setStockDate(resultSet.getDate("stock_date"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return vo;
+	}
 }

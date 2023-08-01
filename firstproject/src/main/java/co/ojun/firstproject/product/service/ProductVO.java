@@ -23,10 +23,10 @@ public class ProductVO {
 
 	@Override
 	public String toString() {
-		System.out.print("제품코드: " + productCode + " /  ");
-		System.out.print("제품이름: " + productName + " /  ");
-		System.out.print("제품가격: " + productPrice + "원" + " /  ");
-		System.out.println("제품설명: " + productDescription + " /  ");
+		System.out.print("[ 제품코드: " + productCode + " || ");
+		System.out.print("제품이름: " + productName + " || ");
+		System.out.print("제품가격: " + productPrice + "원" + " || ");
+		System.out.println("제품설명: " + productDescription + " ]");
 
 		return null;
 	}

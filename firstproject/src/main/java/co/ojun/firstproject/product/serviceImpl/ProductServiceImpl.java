@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductVO productSelect(ProductVO vo) {
+	public ProductVO productSelectByCode(ProductVO vo) {
 		String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_CODE = ?";
 		try {
 			connection = dao.getConnection();
@@ -81,9 +81,32 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public ProductVO productSelectByName(ProductVO vo) {
+		String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME = ?";
+		try {
+			connection = dao.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, vo.getProductName());
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				vo = new ProductVO();
+				vo.setProductCode(resultSet.getString("product_code"));
+				vo.setProductName(resultSet.getString("product_name"));
+				vo.setProductPrice(resultSet.getInt("product_price"));
+				vo.setProductDescription(resultSet.getString("product_description"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return vo;
+	}
+
+	@Override
 	public int productInsert(ProductVO vo) {
 		int n = 0;
-		String sql = "INSERT INTO PRODUCT VALUES(?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO PRODUCT VALUES(?, ?, ?, ?)";
 		try {
 			connection = dao.getConnection();
 			preparedStatement = connection.prepareStatement(sql);
@@ -120,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int productEdit(ProductVO vo) { // 가격 변경 가능
+	public int productEditPrice(ProductVO vo) { // 가격 변경
 		String sql = "UPDATE PRODUCT SET PRODUCT_PRICE = ? WHERE PRODUCT_CODE = ?";
 		int n = 0;
 		try {
@@ -137,4 +160,37 @@ public class ProductServiceImpl implements ProductService {
 		return n;
 	}
 
+	public int productEditName(ProductVO vo) { // 제품명 변경
+		String sql = "UPDATE PRODUCT SET PRODUCT_NAME = ? WHERE PRODUCT_CODE = ?";
+		int n = 0;
+		try {
+			connection = dao.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, vo.getProductName());
+			preparedStatement.setString(2, vo.getProductCode());
+			n = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return n;
+	}
+
+	public int productEditDescription(ProductVO vo) { // 제품설명 변경
+		String sql = "UPDATE PRODUCT SET PRODUCT_DESCRIPTION = ? WHERE PRODUCT_CODE = ?";
+		int n = 0;
+		try {
+			connection = dao.getConnection();
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, vo.getProductDescription());
+			preparedStatement.setString(2, vo.getProductCode());
+			n = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return n;
+	}
 }
