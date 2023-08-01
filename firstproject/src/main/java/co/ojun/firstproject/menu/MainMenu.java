@@ -117,7 +117,7 @@ public class MainMenu {
 		}
 	}
 
-	private void productSelectByCode() { // 단일 제품 조회
+	private void productSelectByCode() { // 상품코드 기준 제품 조회
 		ProductVO product = new ProductVO();
 		System.out.println("== 조회할 제품의 제품코드를 입력하세요. ==");
 		sc.nextLine();
@@ -131,7 +131,7 @@ public class MainMenu {
 		}
 	}
 
-	private void productSelectByName() { // 단일 제품 조회
+	private void productSelectByName() { // 상품이름 기준 제품 조회
 		ProductVO product = new ProductVO();
 		System.out.println("== 조회할 제품의 제품이름을 입력하세요. == ");
 		sc.nextLine();
@@ -249,6 +249,8 @@ public class MainMenu {
 
 	private void transactionSelect() {
 		List<StockVO> stocks = new ArrayList<StockVO>();
+		// StockVO 객체를 담을 수 있는 List를 선언 하는 것. // new ArrayList<StockVO>는
+		// 실제로 StockVO 객체들을 저장할 리스트를 생성.
 		System.out.println("== 거래내역을 조회할 제품의 제품 코드를 입력하세요. ==");
 		sc.nextLine();
 		String code = sc.nextLine();
@@ -265,10 +267,10 @@ public class MainMenu {
 		List<StockVO> stocks = new ArrayList<StockVO>();
 		System.out.println("== 조회할 날짜 시작일을 입력하세요.\n형식: yyyy-mm-dd ==");
 		String startDate = sc.next(); // nextLine으로 입력 시 엔터때문에 형식변환
-		sc.nextLine();
+		sc.nextLine(); // 버퍼 비우기
 		System.out.println("== 조회할 날짜 말일을 입력하세요. \n형식: yyyy-mm-dd ==");
 		String endDate = sc.next();
-		sc.nextLine();
+		sc.nextLine(); // 버퍼 비우기
 		java.sql.Date sDate = java.sql.Date.valueOf(startDate);
 		java.sql.Date eDate = java.sql.Date.valueOf(endDate);
 		stocks = ss.transactionSelectByDate(sDate, eDate);

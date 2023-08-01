@@ -32,14 +32,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductVO> productListAll() {
+	public List<ProductVO> productListAll() { // db 연결, sql 쿼리 실행 resuletSet으로 결과를 받아옴. resulset에서 데이터를 읽어와 productVO
+												// 객체를 만들고 이를 리스트에 추가한뒤 리스트 반환
 		String sql = "SELECT * FROM PRODUCT";
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO vo;
 
 		try {
 			connection = dao.getConnection();
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(sql); // SQL 쿼리를 미리 준비(prepare)하여 나중에 파라미터(?)를 설정하고 실행.
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				vo = new ProductVO();
@@ -181,7 +182,7 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "UPDATE PRODUCT SET PRODUCT_DESCRIPTION = ? WHERE PRODUCT_CODE = ?";
 		int n = 0;
 		try {
-			connection = dao.getConnection();
+			connection = dao.getConnection(); // db 연결 
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, vo.getProductDescription());
 			preparedStatement.setString(2, vo.getProductCode());

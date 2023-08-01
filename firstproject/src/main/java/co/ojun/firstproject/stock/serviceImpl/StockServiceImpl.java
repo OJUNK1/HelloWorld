@@ -135,7 +135,7 @@ public class StockServiceImpl implements StockService {
 		return n;
 	}
 
-	public StockVO getExistingStock(StockVO vo) {
+	public StockVO getExistingStock(StockVO vo) { // 데이터베이스에서 가장 최근의 재고 정보를 가져오는 기능
 		String sql = "SELECT * FROM (SELECT * FROM STOCK WHERE PRODUCT_CODE = ? ORDER BY STOCK_DATE DESC) WHERE ROWNUM = 1";
 		try {
 			connection = dao.getConnection();
